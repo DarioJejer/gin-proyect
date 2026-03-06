@@ -1,0 +1,155 @@
+definitions:
+  requestDTOs.CreateUserDTO:
+    properties:
+      age:
+        example: 30
+        type: integer
+      company_id:
+        example: 1
+        type: integer
+      name:
+        example: John Doe
+        type: string
+    required:
+    - age
+    - company_id
+    - name
+    type: object
+  responseDTOs.BookResponseDTO:
+    properties:
+      author_id:
+        example: 1
+        type: integer
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Book Title
+        type: string
+    type: object
+  responseDTOs.ErrorResponseDTO:
+    properties:
+      code:
+        example: USER_NOT_FOUND
+        type: string
+      message:
+        example: User not found
+        type: string
+    type: object
+  responseDTOs.HouseResponseDTO:
+    properties:
+      address:
+        example: 123 Main St
+        type: string
+      id:
+        example: 1
+        type: integer
+      owner:
+        example: 1
+        type: integer
+    type: object
+  responseDTOs.UserResponseDTO:
+    properties:
+      age:
+        example: 30
+        type: integer
+      books:
+        items:
+          $ref: '#/definitions/responseDTOs.BookResponseDTO'
+        type: array
+      company_id:
+        example: 1
+        type: integer
+      house:
+        $ref: '#/definitions/responseDTOs.HouseResponseDTO'
+      id:
+        example: 1
+        type: integer
+      name:
+        example: John Doe
+        type: string
+    type: object
+info:
+  contact: {}
+  description: This is a sample server for a Gin application.
+  title: Gin API
+  version: "1.0"
+paths:
+  /users:
+    get:
+      description: Retrieve a list of all users with their associated company, books,
+        and house details
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responseDTOs.UserResponseDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+      summary: Get all users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided details
+      parameters:
+      - description: User to create
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/requestDTOs.CreateUserDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/responseDTOs.UserResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+      summary: Create a new user
+      tags:
+      - users
+  /users/{id}:
+    get:
+      description: Retrieve a user by their ID, including associated company, books,
+        and house details
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responseDTOs.UserResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+      summary: Get a user by ID
+      tags:
+      - users
+swagger: "2.0"

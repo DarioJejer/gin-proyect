@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: gin-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gin_proyect
+      POSTGRES_USER: gin_user
+      POSTGRES_PASSWORD: gin_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gin-app
+    depends_on:
+      - db
+    environment:
+      PORT: "3000"
+      DB_URL: host=db user=gin_user password=gin_password dbname=gin_proyect port=5432 sslmode=disable
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  db_data:
+
