@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   test-go:
     docker:
-      - image: cimg/go:1.20
+      - image: cimg/go:1.25.0
     steps:
       - checkout
       - restore_cache:
@@ -25,7 +25,7 @@ jobs:
           path: junit.xml
   build-go-executables:
     docker:
-      - image: cimg/go:1.20
+      - image: cimg/go:1.25.0
     steps:
       - checkout
       - restore_cache:
