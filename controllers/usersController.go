@@ -131,7 +131,7 @@ func (uc *UsersController) GetUsers(ctx *gin.Context) {
 // GetUser godoc
 // @Summary Get a user by ID
 // @Description Retrieve a user by their ID, including associated company, books, and house details
-// @Tags Users
+// @Tags users
 // @Produce json
 // @Param id path int true "User ID"
 // @Success 200 {object} responseDTOs.UserResponseDTO

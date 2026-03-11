@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "Gin/docs"
+	docs "Gin/docs"
 	"Gin/initializers"
 	"Gin/routes"
 	"log"
@@ -32,6 +32,8 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
+	// Keep Swagger using the actual port the server listens on
+	docs.SwaggerInfo.Host = "localhost:" + port
 	// Listen on all interfaces so the server is reachable from the host (e.g. Docker port mapping)
 	if err := r.Run("0.0.0.0:" + port); err != nil {
 		log.Fatal(err)

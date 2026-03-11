@@ -1,4 +1,13 @@
+basePath: /
 definitions:
+  requestDTOs.CreateCompanyDTO:
+    properties:
+      name:
+        example: Tech Company
+        type: string
+    required:
+    - name
+    type: object
   requestDTOs.CreateUserDTO:
     properties:
       age:
@@ -25,6 +34,15 @@ definitions:
         type: integer
       title:
         example: Book Title
+        type: string
+    type: object
+  responseDTOs.CompanyResponseDTO:
+    properties:
+      id:
+        example: 1
+        type: integer
+      name:
+        example: Tech Company
         type: string
     type: object
   responseDTOs.ErrorResponseDTO:
@@ -69,12 +87,92 @@ definitions:
         example: John Doe
         type: string
     type: object
+host: localhost:8080
 info:
   contact: {}
   description: This is a sample server for a Gin application.
   title: Gin API
   version: "1.0"
 paths:
+  /companies:
+    get:
+      description: Retrieve a list of all companies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responseDTOs.CompanyResponseDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+      summary: Get all companies
+      tags:
+      - companies
+    post:
+      consumes:
+      - application/json
+      description: Create a new company with the provided details
+      parameters:
+      - description: Company to create
+        in: body
+        name: company
+        required: true
+        schema:
+          $ref: '#/definitions/requestDTOs.CreateCompanyDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/responseDTOs.CompanyResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+      summary: Create a new company
+      tags:
+      - companies
+  /companies/{id}:
+    get:
+      description: Retrieve a company by its ID
+      parameters:
+      - description: Company ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responseDTOs.CompanyResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+      summary: Get a company by ID
+      tags:
+      - companies
   /users:
     get:
       description: Retrieve a list of all users with their associated company, books,
@@ -117,6 +215,10 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responseDTOs.ErrorResponseDTO'
       summary: Create a new user
       tags:
       - users
@@ -152,4 +254,6 @@ paths:
       summary: Get a user by ID
       tags:
       - users
+schemes:
+- http
 swagger: "2.0"

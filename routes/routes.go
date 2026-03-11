@@ -11,10 +11,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var userController *controllers.UsersController
+var (
+	userController      *controllers.UsersController
+	companiesController *controllers.CompaniesController
+)
 
 func InitializeControllers() {
-	userController = controllers.NewUsersController(repositories.NewUsersRepository(), repositories.NewCompaniesRepository())
+	companiesRepo := repositories.NewCompaniesRepository()
+	userController = controllers.NewUsersController(repositories.NewUsersRepository(), companiesRepo)
+	companiesController = controllers.NewCompaniesController(companiesRepo)
 }
 
 func SetupRoutes(r *gin.Engine) {
@@ -27,11 +32,8 @@ func SetupRoutes(r *gin.Engine) {
 		c.String(http.StatusOK, "Hello, World!")
 	})
 
-	r.GET("/hello/:name", func(c *gin.Context) {
-		name := c.Param("name")
-		c.String(http.StatusOK, "Hello %s!", name)
-	})
 	setUpUserRoutes(r)
+	setUpCompanyRoutes(r)
 }
 
 func setUpUserRoutes(r *gin.Engine) {
@@ -39,4 +41,11 @@ func setUpUserRoutes(r *gin.Engine) {
 	userRoutes.POST("/", userController.PostUser)
 	userRoutes.GET("/", userController.GetUsers)
 	userRoutes.GET("/:id", userController.GetUser)
+}
+
+func setUpCompanyRoutes(r *gin.Engine) {
+	companyRoutes := r.Group("/companies")
+	companyRoutes.POST("/", companiesController.PostCompany)
+	companyRoutes.GET("/", companiesController.GetCompanies)
+	companyRoutes.GET("/:id", companiesController.GetCompany)
 }
