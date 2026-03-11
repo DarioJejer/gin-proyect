@@ -31,7 +31,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Run tests
-          command: go test ./...
+          command: gotestsum --junitfile junit.xml
       - store_test_results:
           path: junit.xml
   build-go-executables:
