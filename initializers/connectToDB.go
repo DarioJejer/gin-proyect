@@ -14,7 +14,7 @@ func ConnectToDB() {
 
 	var err error
 
-	dsn := os.Getenv("DB_URL_LOCAL")
+	dsn := os.Getenv("DB_URL")
 	if dsn == "" {
 		log.Fatal("DB_URL environment variable not set")
 	}
