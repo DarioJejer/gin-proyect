@@ -4,13 +4,12 @@ jobs:
     docker:
       - image: cimg/go:1.25.0
         environment:
-          DB_HOST: localhost
-          DB_USER: gin_user
-          DB_NAME: gin_proyect
-          DB_PASSWORD: "gin_password"
+          DB_URL: "host=localhost user=gin_user password=gin_password dbname=gin_proyect port=5432 sslmode=disable"
       - image: cimg/postgres:14.0
         environment:
-          DB_URL: "host=localhost user=gin_user password=gin_password dbname=gin_proyect port=5432 sslmode=disable"
+          POSTGRES_USER: gin_user
+          POSTGRES_DB: gin_proyect
+          POSTGRES_PASSWORD: "gin_password"
     steps:
       - checkout
       - restore_cache:
