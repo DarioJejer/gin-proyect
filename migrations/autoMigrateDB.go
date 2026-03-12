@@ -2,6 +2,7 @@ package main
 
 import (
 	"Gin/initializers"
+	"Gin/models"
 	"log"
 	"os"
 )
@@ -23,21 +24,23 @@ func init() {
 	if env == "dev" {
 		envDir = "./.env"
 	}
-	if _, err := os.Stat(envDir); os.IsNotExist(err) {
-		log.Fatalf("Error: .env file not found in %s", envDir)
+	if _, err := os.Stat(envDir); err == nil {
+		initializers.LoadEnvVariables(envDir)
+	} else if os.Getenv("DB_URL") == "" {
+		log.Fatalf("Error: .env file not found at %s and DB_URL is not set", envDir)
+	} else {
+		log.Printf("No .env file at %s; using DB_URL from environment", envDir)
 	}
-
-	initializers.LoadEnvVariables(envDir)
 	log.Println("Environment variables loaded successfully")
 	initializers.ConnectToDB()
 }
 
 // Run the file selecting the environment like this: go run autoMigrateDB.go test
 func main() {
-	// initializers.DB.AutoMigrate(
-	// &models.User{},
-	// &models.Book{},
-	// &models.Company{},
-	// &models.House{},
-	// )
+	initializers.DB.AutoMigrate(
+		&models.User{},
+		&models.Book{},
+		&models.Company{},
+		&models.House{},
+	)
 }
