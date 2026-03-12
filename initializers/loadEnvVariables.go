@@ -16,4 +16,5 @@ func LoadEnvVariables(envDir string) {
 		}
 		log.Fatalf("Error loading .env file at %q: %v", envDir, err)
 	}
+	log.Println("Environment variables loaded successfully")
 }

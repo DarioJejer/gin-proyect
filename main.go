@@ -12,7 +12,6 @@ import (
 
 func init() {
 	initializers.LoadEnvVariables("./.env")
-	log.Println("Environment variables loaded successfully")
 	initializers.ConnectToDB()
 	if err := initializers.AutoMigrate(); err != nil {
 		log.Fatalf("failed to run database migrations: %v", err)
