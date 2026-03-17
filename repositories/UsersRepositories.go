@@ -26,7 +26,10 @@ func (r *usersRepository) PostUser(user *models.User) error {
 }
 
 func (r *usersRepository) UpdateUser(user *models.User) error {
-	result := initializers.DB.Save(user)
+	context, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	result := initializers.DB.WithContext(context).Save(user)
 	return result.Error
 }
 

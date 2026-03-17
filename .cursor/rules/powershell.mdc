@@ -1,0 +1,11 @@
+---
+alwaysApply: true
+---
+  # PowerShell terminal
+
+  When suggesting or writing terminal commands for this project, assume the shell is **PowerShell** on Windows.
+
+  - Use **space-separated** flag syntax, not `=`.  
+    Good: `-coverprofile coverage.out`  
+    Avoid: `-coverprofile=coverage.out`
+  - Prefer PowerShell idioms (e.g. `;` to chain commands, `$env:VAR = "value"` for env vars).

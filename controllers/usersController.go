@@ -175,7 +175,37 @@ func (uc *UsersController) GetUser(ctx *gin.Context) {
 }
 
 func (uc *UsersController) UpdateUser(ctx *gin.Context) {
+
 	var requestUser requestDTOs.CreateUserDTO
+
+	id := ctx.Param("id")
+	userID, err := strconv.ParseUint(id, 10, 64)
+	if err != nil {
+		errorResponse := responseDTOs.ErrorResponseDTO{
+			Code:    "INVALID_USER_ID",
+			Message: "Invalid user ID",
+		}
+		ctx.JSON(http.StatusBadRequest, errorResponse)
+		return
+	}
+
+	_, err = uc.UserRepo.GetUser(uint(userID))
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			errorResponse := responseDTOs.ErrorResponseDTO{
+				Code:    "USER_NOT_FOUND",
+				Message: "User not found",
+			}
+			ctx.JSON(http.StatusNotFound, errorResponse)
+			return
+		}
+		errorResponse := responseDTOs.ErrorResponseDTO{
+			Code:    "INTERNAL_SERVER_ERROR",
+			Message: "Failed to get user",
+		}
+		ctx.JSON(http.StatusInternalServerError, errorResponse)
+		return
+	}
 
 	if err := ctx.ShouldBindJSON(&requestUser); err != nil {
 		errorResponse := responseDTOs.ErrorResponseDTO{
@@ -186,7 +216,7 @@ func (uc *UsersController) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	err := uc.validator.Struct(requestUser)
+	err = uc.validator.Struct(requestUser)
 	if err != nil {
 		errorResponse := responseDTOs.ErrorResponseDTO{
 			Code:    "INVALID_USER_DATA",
@@ -207,6 +237,7 @@ func (uc *UsersController) UpdateUser(ctx *gin.Context) {
 	}
 
 	modelUser := models.User{
+		Model:     gorm.Model{ID: uint(userID)},
 		Name:      requestUser.Name,
 		Age:       requestUser.Age,
 		CompanyID: requestUser.CompanyID,

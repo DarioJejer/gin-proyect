@@ -41,6 +41,7 @@ func setUpUserRoutes(r *gin.Engine) {
 	userRoutes.POST("/", userController.PostUser)
 	userRoutes.GET("/", userController.GetUsers)
 	userRoutes.GET("/:id", userController.GetUser)
+	userRoutes.PUT("/:id", userController.UpdateUser)
 }
 
 func setUpCompanyRoutes(r *gin.Engine) {
