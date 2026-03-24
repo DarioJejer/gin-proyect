@@ -1,7 +1,7 @@
 package main
 
 import (
-	docs "Gin/docs"
+	"Gin/helpers"
 	"Gin/initializers"
 	"Gin/routes"
 	"log"
@@ -21,7 +21,7 @@ func init() {
 // @title Gin API
 // @version 1.0
 // @description This is a sample server for a Gin application.
-// @host localhost:8080
+// @host gin-proyect-39779df05d77.herokuapp.com
 // @BasePath /
 // @schemes http
 func main() {
@@ -31,8 +31,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	// Keep Swagger using the actual port the server listens on
-	docs.SwaggerInfo.Host = "localhost:" + port
+	helpers.ConfigureSwaggerForEnvironment(port)
 	// Listen on all interfaces so the server is reachable from the host (e.g. Docker port mapping)
 	if err := r.Run("0.0.0.0:" + port); err != nil {
 		log.Fatal(err)
