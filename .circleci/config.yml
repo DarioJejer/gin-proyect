@@ -39,7 +39,7 @@ jobs:
           command: gotestsum --junitfile junit.xml
       - run:
           name: Create coverage report
-          command: go test ./... -v -cover -coverpkg=$COVERAGED_PACKAGES -coverprofile=coverage.out
+          command: go test ./... -v -cover -coverpkg=$(go list ./... | grep -v migrations | grep -v mocks | grep -v docs | grep -v routes | tr '\n' ',') -coverprofile=coverage.out
       - run:
           name: Upload coverage report
           command: $(go env GOPATH)/bin/goveralls -coverprofile=coverage.out -service=circle-ci -repotoken=$COVERALLS_REPO_TOKEN
