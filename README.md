@@ -54,8 +54,8 @@ or update. Every request must only accept this `Content-type: application/json`.
 
 ## Badges
 
-[CircleCI](https://dl.circleci.com/status-badge/redirect/gh/DarioJejer/gin-proyect/tree/main)
-[Coverage Status](https://coveralls.io/github/DarioJejer/gin-proyect?branch=main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/DarioJejer/gin-proyect/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/DarioJejer/gin-proyect/tree/main)
+[![Coverage Status](https://coveralls.io/repos/github/DarioJejer/gin-proyect/badge.svg?branch=main)](https://coveralls.io/github/DarioJejer/gin-proyect?branch=main)
 
 ## Technologies
 
