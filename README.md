@@ -74,15 +74,19 @@ or update. Every request must only accept this `Content-type: application/json`.
 
 ## Run APP
 
-1. Create an .env file on base directory with values set per .env.example
-2. Execute docker compose to create the db, run migrations, connect to it and run the app.
+1. Open a terminal with Git installed and run:
+```
+git clone https://github.com/DarioJejer/gin-proyect.git
+```
+2. Create an .env file on base directory with values set per .env.example
+3. Execute docker compose to create the db, run migrations, connect to it and run the app.
 
 ```
 docker-compose up
 ```
 
-1. Go to the swagger endpoint and test the app or consume api through postman.
-2. To stop the app.
+4. Go to the swagger endpoint and test the app or consume api through postman.
+5. To stop the app.
 
 ```
 docker-compose down
